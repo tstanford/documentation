@@ -414,6 +414,15 @@ If you want to save your changes prior to doing this:
 
 ## Squash local commits. local repository only has two commits and normal squash fails
 
+If you see this error message:
+
+  $ git rebase -i HEAD~1
+  error: cannot 'squash' without a previous commit
+  You can fix this with 'git rebase --edit-todo' and then run 'git rebase --continue'.
+  Or you can abort the rebase with 'git rebase --abort'.
+  
+Do this:
+
     git rebase -i HEAD^1
 
 change pick to edit
