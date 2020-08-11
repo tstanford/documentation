@@ -410,3 +410,15 @@ If you want to save your changes prior to doing this:
 
     git commit -a -m "Saving my work, just in case"
     git branch my-saved-work
+
+
+## Squash local commits. loc repository only has two commits
+
+    git rebase -i HEAD^1
+
+set to edit
+
+    git reset --soft HEAD^
+    git commit --amend
+    git rebase --continue
+    git push --force
