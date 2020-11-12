@@ -412,22 +412,57 @@ If you want to save your changes prior to doing this:
     git branch my-saved-work
 
 
+## Squash commits
+
+
+
 ## Squash local commits. local repository only has two commits and normal squash fails
 
-If you see this error message:
+Lets say you have 2 commits that you want to squash locally into one commit
 
-	$ git rebase -i HEAD~1
-	error: cannot 'squash' without a previous commit
-	You can fix this with 'git rebase --edit-todo' and then run 'git rebase --continue'.
-	Or you can abort the rebase with 'git rebase --abort'.
-  
-Do this:
+    git log --pretty=oneline
+    
+    c2d22944c28af37b8827a33764d0199d57c62cef (HEAD -> WOLF-547) x
+    fd7e7c10fb728445a8646c4573b81e78768affe3 (origin/WOLF-547) WOLF-547 New tab "Requests" added to the BacsRecalls View to show Manual Requests raised today.
+	
 
-    git rebase -i HEAD^1
+Start an interactive rebase for the 2 most recent commits.
 
-change pick to edit
+    git rebase -i HEAD~2
+    
+    pick fd7e7c10 WOLF-547 New tab "Requests" added to the BacsRecalls View to show Manual Requests raised today.
+    pick c2d22944 x
+    
+This will open vi editor. Choose one of the commits that you would like to `squash` into the other. Do this by replace `pick` with `squash` or just `s`
 
-    git reset --soft HEAD^
-    git commit --amend
-    git rebase --continue
+    pick fd7e7c10 WOLF-547 New tab "Requests" added to the BacsRecalls View to show Manual Requests raised today.
+    s c2d22944 x
+    
+Save and exit with `:wq!`
+
+Another vi instance will open allow you to edit the commit message for the single commit. Anything starting with # will be ignored.
+
+Save and exit with `:wq!`
+
+## Squash remote commits.    
+
+Do a git pull. Make sure everything is up to date and correctly merged locally.
+
+Follow the previous section to squash local commits.
+
+Do a forced git push
+
     git push --force
+
+
+
+
+
+    
+
+	
+
+
+
+
+
