@@ -47,6 +47,7 @@ This is my ever growing list of 'how to do' commands for git. This guide is not 
   - [Creating a tag](#creating-a-tag)
 - [Undoing work](#undoing-work)
   - [Reset a local branch to match the remote branch, throwing away changes.](#reset-a-local-branch-to-match-the-remote-branch-throwing-away-changes)
+- [Squash commits](#Squash-commits)
 
 ___
 
