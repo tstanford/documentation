@@ -48,7 +48,7 @@ This is my ever growing list of 'how to do' commands for git. This guide is not 
 - [Undoing work](#undoing-work)
   - [Reset a local branch to match the remote branch, throwing away changes.](#reset-a-local-branch-to-match-the-remote-branch-throwing-away-changes)
 - [Squash commits](#Squash-commits)
-  - [Squash local commits. local repository only has two commits and normal squash fails](#Squash-local-commits.-local-repository-only-has-two-commits-and-normal-squash-fails)
+  - [Squash local commits. local repository only has two commits and normal squash fails](#squash-local-commits-local-repository-only-has-two-commits-and-normal-squash-fails)
   - [Squash remote commits](#Squash-remote-commits.)
 
 ___
