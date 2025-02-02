@@ -201,3 +201,19 @@ Omit UUID to let linux create a new one.
 
     systemctl list-unit-files --type service -all
 
+## Use journalctl 
+
+### View errors ordered by more recent.
+
+sudo journalctl -p 0..4 -r
+
+| n | type     |
+| - | -------- | 
+| 0 | emerg    | 
+| 1 | alert    |
+| 2	| crit     |
+| 3	| err      |
+| 4	| warning  |
+| 5	| notice   |
+| 6 | info     |
+| 7 | debug    |
