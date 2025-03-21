@@ -14,6 +14,8 @@
   * code review should be very strict, any optimisations must be discussed
   * code must  be very easy to read.
   * this can be frustrating for engineers who are new to this but the team will quickly adapt and standards with raise.
+* dont use feature branches
+  * use feature toggles instead.
 
 ## QA
 - regression suite for each microservice with all up stream and downstream dependencies tested too
@@ -49,7 +51,6 @@
   - logs in prod, must be business flows and exceptions. linked with correlation ids. so that the journey from public endpoint can be traced through the entire platform and susequent hits to internal services traced.
 
 # devops.
-
 - own infrastructure iaas code base
 
 
