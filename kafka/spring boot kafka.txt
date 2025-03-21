@@ -1,0 +1,133 @@
+spring boot + kafka
+-------------------
+
+https://www.youtube.com/watch?v=BObDQv_sCb4
+https://programmingtechie.com/articles/spring-boot-microservices-tutorial-part-8
+https://github.com/SaiUpadhyayula/microservices-shop-frontend
+
+look at kafka.apache.org
+- look at getting started
+
+
+Spring for Apache Kafka:
+    - KafkaTemplate - send messages to the kafka topic
+    - @KafkaListener - receive messages from the kafka topic
+    - pom.xml file
+        - add dependencies:
+            - org.springframework.kafka:spring.kafka
+            - org.springframework.kafka:spring.kafka.test
+            - org.testcontainers.kafka
+    application.properties:
+        add settings:
+            spring.kafka.bootstrap-servers=localhost:9092
+            spring.kafka.template.default-topic=order-placed
+            spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization=StringSerializer
+            spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+            
+    send a message to kafka topic:
+        - create class OrderPlacedEvent
+            - String orderNumber
+            - String email
+        
+        * event message can be generated later using schema registry rather than using a pojo
+        
+        ```
+        // inject KafkaTemplate<String, OrderPlacedEvent>   --- topic, message
+        OrderPlacedEvent event = new OrderPlacedEvent("aaa123","tim@tim.com");
+        kafkaTemplate.send("order-placed", event);        
+        ```
+        
+    receive a message from a kafka topic:
+    
+    application.properties:
+        add settings:
+            spring.kafka.bootstrap-servers=localhost:9092
+            spring.kafka.consumer.group-id: notificationService
+            spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization=StringDeserializer
+            spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+            spring.kafka.consumer.properties.spring.json.type.mapping=event:com.techie.microservices.orer.event.OrderPlacedEvent
+            
+    ```
+    @Service
+    public class NotificationService {    
+        @KafkaListener(topics = "order-placed")
+        public void listen(OrderPlacedEvent orderPlacedEvent){
+            //TODO: log that message was received
+            
+            //do something with the orderPlacedEvent
+            
+            //JavaMailSender
+            //mailtrap
+        }    
+    }
+    ```
+    
+    Note: jackson is part of spring-boot-starter-web
+
+    
+install kafka using docker-compose.yml
+copy docker.compose.yml from here:
+ - https://programmingtechie.com/articles/spring-boot-microservices-tutorial-part-8
+ 
+zookeeper
+    orchestrate different clusters of kafka
+    manages the cluster for HA
+    centralised stored to manage the stage of the kafka cluster
+    runs of port 2181
+    - no need for zookeeper in latest version of kafka 
+    
+kafka
+    ports: 9092, 29092
+    
+schema registry
+    why do we need it?
+        we dont need to create 2 versions of the pojo class in the producer microserver and the consumer microservice.
+        it will generate compile time classes from the schema
+    provided by a company called confluent
+    
+    - delete the pojo class
+    -  in resources:
+        avro
+            order-placed.avsc
+                {
+                    "type": "record",
+                    "name": "OrderPlacedEvent",
+                    "namespace": "com.techie.microservices.order.event",
+                    "fields":[
+                        {"name": "orderNumber", "type": "string"},
+                        {"name": "email", "type": "string"},
+                        {"name": "firstName", "type": "string"},
+                        {"name": "lastName", "type": "string"},
+                    ]                    
+                }
+    - pom.xml:
+        - add dependencies:
+            io.confluent:kafka-avro-serializer
+            io.confluent:kafka-schema-registry-client
+            org.apache.acro:avro
+        - add plugin:
+            org.apache.avro:avro-maven-plugin
+            
+    - change the value-serializer in the producer
+    spring.kafka.producer.value-serializer=io.confluent.kafka.serializer.KafkaAvroSerializer
+    
+    - change the value-serializer in the consumer
+    spring.kafka.producer.value-deserializer=io.confluent.kafka.serializer.KafkaAvroDeserializer
+    
+    - register the schema registry with spring for producer
+    spring.kafka.producer.properties.schema.registry.url=http://127.0.0.1:8085
+    
+    - register the schema registry with spring for consumer
+    spring.kafka.consumer.properties.schema.registry.url=http://127.0.0.1:8085
+    spring.kafka.consumer.properties.specific.avro.reader=true
+    
+kafka-ui
+    view topics and messages
+    
+
+    
+    
+    
+
+
+
